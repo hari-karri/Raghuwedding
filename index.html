@@ -1,0 +1,327 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raghav & Anusha - Engagement Invitation</title>
+    <!-- Elegant Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4a2f21;      /* Deep Elegant Brown */
+            --secondary: #b8926a;    /* Muted Gold Accent */
+            --dark: #2c2520;         /* Soft Charcoal Brown */
+            --light: #fdfaf4;        /* Cream/Ivory Background */
+            --gold-light: #f3ece0;   /* Light Card Border/Background */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        /* Hero / Cover Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(rgba(253, 250, 244, 0.88), rgba(253, 250, 244, 0.88)), 
+                        url('https://images.unsplash.com/photo-1545232979-8bf34eb9757b?q=80&w=1920&auto=format&fit=crop') no-repeat center center/cover;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 20px; bottom: 20px; left: 20px; right: 20px;
+            border: 1px solid var(--secondary);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .hashtag {
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .subtitle-top {
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .announcement {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--dark);
+            background: var(--gold-light);
+            padding: 6px 20px;
+            border-radius: 2px;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            color: var(--primary);
+            font-weight: 300;
+            letter-spacing: 4px;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .ampersand {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.5rem;
+            color: var(--secondary);
+            display: block;
+            margin: 5px 0;
+            text-transform: lowercase;
+        }
+
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.6rem; }
+            .ampersand { font-size: 2.8rem; }
+        }
+
+        .save-the-date {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--secondary);
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .date-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            border-top: 1px solid var(--secondary);
+            border-bottom: 1px solid var(--secondary);
+            padding: 10px 25px;
+            margin-bottom: 40px;
+        }
+
+        .date-part {
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .date-main {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Countdown Timer */
+        .countdown-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 12px;
+            border-radius: 4px;
+            min-width: 68px;
+            border: 1px solid var(--gold-light);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .time-box label {
+            display: block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--secondary);
+            margin-top: 2px;
+        }
+
+        /* Details Section */
+        .details-section {
+            padding: 80px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .details-card {
+            background: white;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(74, 47, 33, 0.04);
+            border: 1px solid var(--gold-light);
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .venue-title {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .venue-text {
+            line-height: 1.8;
+            font-size: 0.95rem;
+            color: #554a42;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        .map-btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 35px;
+            border-radius: 2px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 1px solid var(--primary);
+        }
+
+        .map-btn:hover {
+            background-color: transparent;
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 20px;
+            font-family: 'Alex Brush', cursive;
+            font-size: 1.8rem;
+            color: var(--secondary);
+            border-top: 1px solid var(--gold-light);
+            background-color: #fbf7f0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cover Section -->
+    <section class="hero">
+        <div class="hashtag">#RAGHAVwedsANUSHA</div>
+        <div class="subtitle-top">The Best Day is on its way!</div>
+        <div class="announcement">Engagement Fixed</div>
+        
+        <h1 class="main-title">
+            Raghav 
+            <span class="ampersand">&amp;</span> 
+            Anusha
+        </h1>
+        
+        <div class="save-the-date">♥ Save The Date ♥</div>
+        <div class="date-container">
+            <div class="date-part">July</div>
+            <div class="date-main">06<span>th</span></div>
+            <div class="date-part">2026</div>
+        </div>
+        
+        <!-- Live Countdown -->
+        <div class="countdown-container">
+            <div class="time-box"><span id="days">00</span><label>Days</label></div>
+            <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
+            <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>
+            <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>
+        </div>
+    </section>
+
+    <!-- Details Section -->
+    <section class="details-section">
+        <h2 class="section-title">The Venue</h2>
+        
+        <div class="details-card">
+            <div class="venue-title">Club Vasantha</div>
+            <p class="venue-text">
+                Sy No. 79, Vasantha City,<br>
+                Bikshapathi Nagar, Hafeezpet,<br>
+                Hyderabad, Telangana 500049
+            </p>
+            <!-- Direct custom location query link for Club Vasantha, Hafeezpet -->
+            <a href="https://www.google.com/maps/search/?api=1&query=Club+Vasantha+Vasantha+City+Hafeezpet+Hyderabad" target="_blank" class="map-btn">Locate On Map</a>
+        </div>
+    </section>
+
+    <footer>
+        Two Hearts. One Beautiful Journey.
+    </footer>
+
+    <!-- Countdown Timer Logic for July 6, 2026 -->
+    <script>
+        const targetDate = new Date("July 6, 2026 00:00:00").getTime();
+
+        const countdown = setInterval(function() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                clearInterval(countdown);
+                document.querySelector(".countdown-container").innerHTML = "<p style='font-weight:500; color:var(--primary); letter-spacing:2px; text-transform:uppercase; font-size:0.9rem;'>The Celebration Has Begun!</p>";
+                return;
+            }
+
+            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((difference % (1000 * 60)) / (1000 * 60));
+
+            document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+            document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+            document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+        }, 1000);
+    </script>
+</body>
+</html>
