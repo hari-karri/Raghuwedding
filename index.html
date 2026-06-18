@@ -14,17 +14,31 @@
     --env-front:#ecdcc5; --env-back:#decbad; --env-flap:#d4bf9c;
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;min-height:100%}
   body{
-    font-family:'Montserrat',sans-serif;background:var(--light);
-    color:var(--dark);text-align:center;min-height:100vh;
-    display:flex;justify-content:center;align-items:center;
-    padding:20px;overflow-x:hidden;
+    font-family:'Montserrat',sans-serif;
+    background:var(--light);color:var(--dark);text-align:center;
+    min-height:100vh;min-height:100dvh;            /* dynamic vh for mobile */
+    overflow-x:hidden;
   }
-  .wrapper{position:relative;width:100%;max-width:650px;display:flex;justify-content:center;align-items:center;}
+
+  /* ============ FULL-SCREEN CENTERING STAGE ============ */
+  .stage{
+    position:relative;
+    min-height:100vh;min-height:100dvh;
+    display:grid;place-items:center;               /* perfect centering */
+    padding:24px 16px;
+  }
+  .wrapper{
+    position:relative;width:100%;max-width:640px;
+    display:grid;place-items:center;
+  }
 
   /* ============ ENVELOPE ============ */
   .envelope{
-    position:relative;width:450px;height:300px;max-width:92vw;
+    position:relative;
+    width:min(450px,92vw);
+    aspect-ratio:3/2;                              /* scales perfectly */
     cursor:pointer;perspective:1500px;
     transition:transform .9s cubic-bezier(.4,0,.2,1),opacity .6s ease .3s;
     z-index:10;
@@ -34,14 +48,12 @@
     border-radius:6px;box-shadow:0 30px 60px rgba(74,47,33,.25);
     overflow:hidden;
   }
-  /* Bottom + side flap (visible front pocket) */
   .env-front{
     position:absolute;left:0;right:0;bottom:0;height:65%;
     background:var(--env-front);
     clip-path:polygon(0 35%,50% 100%,100% 35%,100% 100%,0 100%);
     z-index:3;
   }
-  /* Top flap */
   .env-flap{
     position:absolute;top:0;left:0;width:100%;height:100%;
     background:var(--env-flap);
@@ -53,56 +65,75 @@
   .wax-seal{
     position:absolute;top:55%;left:50%;
     transform:translate(-50%,-50%);
-    width:60px;height:60px;border-radius:50%;
+    width:clamp(48px,12%,68px);aspect-ratio:1;border-radius:50%;
     background:radial-gradient(circle at 35% 35%,#e8c89a 0%,var(--secondary) 70%,#8e6a44 100%);
     box-shadow:0 4px 10px rgba(0,0,0,.25),inset 0 0 8px rgba(0,0,0,.25);
     display:flex;align-items:center;justify-content:center;
-    color:#fff;font-family:'Alex Brush',cursive;font-size:1.6rem;
-    z-index:6;transition:transform .3s ease;
+    color:#fff;font-family:'Alex Brush',cursive;font-size:1.4rem;
+    z-index:6;transition:transform .3s ease,opacity .4s ease;
   }
   .wax-seal::after{content:"R&A"}
   .envelope:hover .wax-seal{transform:translate(-50%,-50%) scale(1.08)}
   .env-text{
-    position:absolute;left:0;right:0;bottom:18%;
-    font-family:'Alex Brush',cursive;font-size:2.2rem;
+    position:absolute;left:0;right:0;bottom:16%;
+    font-family:'Alex Brush',cursive;
+    font-size:clamp(1.4rem,5vw,2.2rem);
     color:var(--primary);z-index:4;pointer-events:none;
   }
+  .hint{
+    position:absolute;left:0;right:0;bottom:-32px;
+    font-size:.7rem;letter-spacing:3px;text-transform:uppercase;
+    color:var(--secondary);opacity:.8;
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:.4}50%{opacity:.9}}
 
   /* Open state */
   .wrapper.is-open .env-flap{transform:rotateX(180deg);z-index:1}
-  .wrapper.is-open .wax-seal{opacity:0;transition:opacity .3s ease}
+  .wrapper.is-open .wax-seal{opacity:0}
+  .wrapper.is-open .hint{display:none}
   .wrapper.is-open .envelope{
     transform:translateY(110vh) rotate(-3deg);opacity:0;pointer-events:none;
+    position:absolute;                              /* remove from flow */
   }
 
   /* ============ INVITATION CARD ============ */
   .main-card{
-    position:absolute;width:100%;max-width:600px;
-    background:#fff;padding:45px 25px;border-radius:4px;
+    width:100%;max-width:600px;
+    background:#fff;padding:clamp(28px,5vw,48px) clamp(18px,4vw,28px);
+    border-radius:4px;
     box-shadow:0 15px 40px rgba(74,47,33,.08);
     border:1px solid var(--gold-light);
-    opacity:0;transform:translateY(50px) scale(.95);
+    opacity:0;transform:translateY(40px) scale(.96);
     transition:opacity .8s cubic-bezier(.4,0,.2,1) .4s,transform .8s cubic-bezier(.4,0,.2,1) .4s;
-    pointer-events:none;z-index:2;
+    pointer-events:none;
+    position:absolute;                              /* stacked over envelope */
   }
   .main-card::before{
     content:'';position:absolute;inset:15px;
     border:1px solid var(--secondary);opacity:.4;pointer-events:none;
   }
   .wrapper.is-open .main-card{
-    opacity:1;transform:translateY(0) scale(1);pointer-events:auto;position:relative;
+    position:relative;opacity:1;transform:translateY(0) scale(1);pointer-events:auto;
   }
 
   .hashtag{font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--secondary);margin-bottom:12px;font-weight:500}
-  .subtitle-top{font-family:'Alex Brush',cursive;font-size:1.9rem;color:var(--primary);margin-bottom:8px}
+  .subtitle-top{font-family:'Alex Brush',cursive;font-size:clamp(1.6rem,4.5vw,2.1rem);color:var(--primary);margin-bottom:8px}
   .announcement{
     font-size:.75rem;letter-spacing:4px;text-transform:uppercase;color:var(--dark);
     background:var(--gold-light);padding:6px 20px;border-radius:2px;
     display:inline-block;margin-bottom:30px;font-weight:500;
   }
-  .main-title{font-size:2.6rem;color:var(--primary);font-weight:300;letter-spacing:4px;line-height:1.2;margin-bottom:10px;text-transform:uppercase}
-  .ampersand{font-family:'Alex Brush',cursive;font-size:2.6rem;color:var(--secondary);display:block;margin:5px 0;text-transform:lowercase}
-
+  .main-title{
+    font-size:clamp(1.9rem,6vw,2.8rem);
+    color:var(--primary);font-weight:300;letter-spacing:4px;line-height:1.2;
+    margin-bottom:10px;text-transform:uppercase;
+  }
+  .ampersand{
+    font-family:'Alex Brush',cursive;
+    font-size:clamp(2rem,6vw,2.8rem);
+    color:var(--secondary);display:block;margin:5px 0;text-transform:lowercase;
+  }
   .save-the-date{font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--secondary);margin-top:25px;margin-bottom:15px}
   .date-container{
     display:flex;align-items:center;justify-content:center;gap:15px;
@@ -129,74 +160,204 @@
   .map-btn:hover{background:transparent;color:var(--primary)}
   footer{margin-top:35px;font-family:'Alex Brush',cursive;font-size:1.6rem;color:var(--secondary)}
 
-  @media (max-width:600px){
-    .envelope{height:260px}
-    .main-title{font-size:2rem;letter-spacing:3px}
-    .ampersand{font-size:2.2rem}
-    .env-text{font-size:1.7rem}
-    .main-card{padding:35px 18px}
+  /* ============ PETALS CANVAS ============ */
+  #petals{
+    position:fixed;inset:0;width:100%;height:100%;
+    pointer-events:none;z-index:50;
+  }
+
+  /* Reduced motion respect */
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
   }
 </style>
 </head>
 <body>
-  <div class="wrapper" id="revealWrapper">
+  <div class="stage">
+    <div class="wrapper" id="revealWrapper">
 
-    <!-- Envelope -->
-    <div class="envelope" onclick="openInvitation()" aria-label="Open invitation">
-      <div class="env-body">
-        <div class="env-front"></div>
-        <div class="env-text">Raghav &amp; Anusha</div>
+      <!-- Envelope -->
+      <div class="envelope" onclick="openInvitation()" aria-label="Open invitation">
+        <div class="env-body">
+          <div class="env-front"></div>
+          <div class="env-text">Raghav &amp; Anusha</div>
+        </div>
+        <div class="env-flap"></div>
+        <div class="wax-seal"></div>
+        <div class="hint">Tap to open ✦</div>
       </div>
-      <div class="env-flap"></div>
-      <div class="wax-seal"></div>
+
+      <!-- Invitation Card -->
+      <main class="main-card">
+        <div class="hashtag">#RAGHAVwedsANUSHA</div>
+        <div class="subtitle-top">The Best Day is on its way!</div>
+        <div class="announcement">Engagement Fixed</div>
+
+        <h1 class="main-title">
+          Raghav
+          <span class="ampersand">&amp;</span>
+          Anusha
+        </h1>
+
+        <div class="save-the-date">Save The Date</div>
+        <div class="date-container">
+          <div class="date-part">July</div>
+          <div class="date-main">06<sup>th</sup></div>
+          <div class="date-part">2026</div>
+        </div>
+
+        <div class="countdown-container">
+          <div class="time-box"><span id="days">00</span><label>Days</label></div>
+          <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
+          <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>
+          <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>
+        </div>
+
+        <div class="venue-card">
+          <div class="venue-title">Club Vasantha</div>
+          <p class="venue-text">
+            Sy No. 79, Vasantha City,<br>
+            Bikshapathi Nagar, Hafeezpet,<br>
+            Hyderabad, Telangana 500049
+          </p>
+          <a href="https://www.google.com/maps/search/?api=1&query=Club+Vasantha+Vasantha+City+Hafeezpet+Hyderabad"
+             target="_blank" rel="noopener" class="map-btn">Locate On Map</a>
+        </div>
+
+        <footer>Two Hearts. One Beautiful Journey.</footer>
+      </main>
     </div>
-
-    <!-- Invitation Card -->
-    <main class="main-card">
-      <div class="hashtag">#RAGHAVwedsANUSHA</div>
-      <div class="subtitle-top">The Best Day is on its way!</div>
-      <div class="announcement">Engagement Fixed</div>
-
-      <h1 class="main-title">
-        Raghav
-        <span class="ampersand">&amp;</span>
-        Anusha
-      </h1>
-
-      <div class="save-the-date">Save The Date</div>
-      <div class="date-container">
-        <div class="date-part">July</div>
-        <div class="date-main">06<sup>th</sup></div>
-        <div class="date-part">2026</div>
-      </div>
-
-      <div class="countdown-container">
-        <div class="time-box"><span id="days">00</span><label>Days</label></div>
-        <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
-        <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>
-        <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>
-      </div>
-
-      <div class="venue-card">
-        <div class="venue-title">Club Vasantha</div>
-        <p class="venue-text">
-          Sy No. 79, Vasantha City,<br>
-          Bikshapathi Nagar, Hafeezpet,<br>
-          Hyderabad, Telangana 500049
-        </p>
-        <a href="https://www.google.com/maps/search/?api=1&query=Club+Vasantha+Vasantha+City+Hafeezpet+Hyderabad"
-           target="_blank" rel="noopener" class="map-btn">Locate On Map</a>
-      </div>
-
-      <footer>Two Hearts. One Beautiful Journey.</footer>
-    </main>
   </div>
 
+  <!-- Petals overlay -->
+  <canvas id="petals"></canvas>
+
 <script>
+  /* ---------- OPEN ENVELOPE ---------- */
   function openInvitation(){
-    document.getElementById('revealWrapper').classList.add('is-open');
+    const w = document.getElementById('revealWrapper');
+    if(w.classList.contains('is-open')) return;
+    w.classList.add('is-open');
+    playRustle();
+    setTimeout(startPetals, 500);   // begin petals as card reveals
   }
 
+  /* ---------- 🔊 PAPER RUSTLE (Web Audio synthesis) ---------- */
+  function playRustle(){
+    try{
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if(!Ctx) return;
+      const ctx = new Ctx();
+      const duration = 1.1;
+      const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      // Filtered noise bursts → paper crinkle feel
+      for(let i=0;i<data.length;i++){
+        const t = i / ctx.sampleRate;
+        const envelope = Math.pow(1 - t/duration, 1.8);
+        // mix white noise with random crackle spikes
+        const noise = (Math.random()*2-1) * 0.6;
+        const crackle = Math.random() > 0.985 ? (Math.random()*2-1) : 0;
+        data[i] = (noise + crackle) * envelope * 0.45;
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buffer;
+
+      // High-pass to make it sound papery (not boomy)
+      const hp = ctx.createBiquadFilter();
+      hp.type = 'highpass'; hp.frequency.value = 1800;
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass'; bp.frequency.value = 4500; bp.Q.value = 0.6;
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.6, ctx.currentTime + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+      src.connect(hp).connect(bp).connect(gain).connect(ctx.destination);
+      src.start();
+      src.onended = () => ctx.close();
+    }catch(e){ /* silent fail */ }
+  }
+
+  /* ---------- 🌸 FALLING PETALS ---------- */
+  const canvas = document.getElementById('petals');
+  const ctx = canvas.getContext('2d');
+  let petals = [], petalAnim = null, petalsActive = false;
+
+  function resizeCanvas(){
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  const PETAL_COLORS = ['#f7c6c7','#f4a6a8','#e88b8d','#d98a6b','#b8926a','#f3d9b1'];
+
+  function makePetal(yStart){
+    return {
+      x: Math.random() * canvas.width,
+      y: yStart !== undefined ? yStart : -20 - Math.random()*canvas.height,
+      r: 6 + Math.random()*8,
+      color: PETAL_COLORS[Math.floor(Math.random()*PETAL_COLORS.length)],
+      vy: 0.8 + Math.random()*1.4,
+      vx: -0.6 + Math.random()*1.2,
+      angle: Math.random()*Math.PI*2,
+      spin: -0.04 + Math.random()*0.08,
+      sway: Math.random()*Math.PI*2
+    };
+  }
+
+  function drawPetal(p){
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.angle);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = 0.85;
+    // petal shape (teardrop)
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.r*0.6, p.r, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(const p of petals){
+      p.sway += 0.02;
+      p.x += p.vx + Math.sin(p.sway)*0.6;
+      p.y += p.vy;
+      p.angle += p.spin;
+      if(p.y > canvas.height + 20){
+        // recycle while active, otherwise let them fade out
+        if(petalsActive){
+          p.y = -20; p.x = Math.random()*canvas.width;
+        }
+      }
+      drawPetal(p);
+    }
+    // remove offscreen when stopping
+    if(!petalsActive){
+      petals = petals.filter(p => p.y < canvas.height + 20);
+      if(petals.length === 0){
+        cancelAnimationFrame(petalAnim); petalAnim = null;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        return;
+      }
+    }
+    petalAnim = requestAnimationFrame(tick);
+  }
+
+  function startPetals(){
+    petalsActive = true;
+    const count = window.innerWidth < 600 ? 35 : 60;
+    petals = Array.from({length: count}, () => makePetal());
+    if(!petalAnim) tick();
+    // auto-stop after 8s so it doesn't run forever
+    setTimeout(() => { petalsActive = false; }, 8000);
+  }
+
+  /* ---------- ⏱ COUNTDOWN ---------- */
   const targetDate = new Date("July 6, 2026 00:00:00").getTime();
   const $ = id => document.getElementById(id);
   const pad = n => n < 10 ? "0" + n : n;
@@ -209,14 +370,10 @@
         "<p style='font-weight:500;color:var(--primary);letter-spacing:2px;text-transform:uppercase;font-size:.85rem;'>The Celebration Has Begun!</p>";
       return;
     }
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);   // ← fixed
-    $("days").innerText = pad(d);
-    $("hours").innerText = pad(h);
-    $("minutes").innerText = pad(m);
-    $("seconds").innerText = pad(s);
+    $("days").innerText    = pad(Math.floor(diff / 86400000));
+    $("hours").innerText   = pad(Math.floor((diff % 86400000) / 3600000));
+    $("minutes").innerText = pad(Math.floor((diff % 3600000) / 60000));
+    $("seconds").innerText = pad(Math.floor((diff % 60000) / 1000));
   }, 1000);
 </script>
 </body>
