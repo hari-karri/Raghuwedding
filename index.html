@@ -1,86 +1,223 @@
-<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Raghav & Anusha - Invitation Reveal</title>    <!-- Elegant Google Fonts -->    <link rel="preconnect" href="https://fonts.googleapis.com">    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">        <style>        :root {            --primary: #4a2f21; /* Deep Elegant Brown */            --secondary: #b8926a; /* Muted Gold Accent */            --dark: #2c2520; /* Soft Charcoal Brown */            --light: #fdfaf4; /* Cream/Ivory Background */            --gold-light: #f3ece0; /* Light Card Border/Background */            --envelope-bg: #ecdcc5; /* Deep Cream for Envelope Outer */            --envelope-inner: #decbad;/* Shadows for Envelope Depth */        }
-        * {            box-sizing: border-box;            margin: 0;            padding: 0;        }
-        body {            font-family: 'Montserrat', sans-serif;            background-color: var(--light);            color: var(--dark);            text-align: center;            min-height: 100vh;            display: flex;            justify-content: center;            align-items: center;            overflow-x: hidden;        }
-        /* Screen Wrapper */        .wrapper {            position: relative;            width: 100%;            min-height: 100vh;            display: flex;            justify-content: center;            align-items: center;            padding: 20px;        }
-        /* ================= ENVELOPE DESIGN ================= */        .envelope-container {            position: relative;            width: 450px;            height: 600px;            background-color: var(--envelope-bg);            border-radius: 8px;            box-shadow: 0 30px 60px rgba(74, 47, 33, 0.2);            cursor: pointer;            display: flex;            justify-content: center;            align-items: center;            transition: transform 0.5s ease, opacity 0.5s ease;            z-index: 10;        }
-        /* Top Flap of Envelope */        .envelope-container::before {            content: '';            position: absolute;            top: 0;            width: 0;            height: 0;            border-left: 225px solid transparent;            border-right: 225px solid transparent;            border-top: 250px solid var(--envelope-inner);            transform-origin: top;            transition: transform 0.4s ease 0.2s;            z-index: 5;        }
-        /* Bottom/Side Flaps */        .envelope-container::after {            content: '';            position: absolute;            bottom: 0;            width: 0;            height: 0;            border-left: 225px solid var(--envelope-bg);            border-right: 225px solid var(--envelope-bg);            border-bottom: 350px solid var(--envelope-inner);            border-radius: 0 0 8px 8px;            z-index: 4;        }
-        .envelope-text {            position: absolute;            top: 65%;            font-family: 'Alex Brush', cursive;            font-size: 2.5rem;            color: var(--primary);            z-index: 6;            pointer-events: none;            letter-spacing: 1px;        }
-        /* Golden Wax Seal Button */        .wax-seal {            position: absolute;            top: calc(250px - 30px); /* Sits right at the tip of the flap */            width: 60px;            height: 60px;            background: radial-gradient(circle, #dfba8c 0%, var(--secondary) 100%);            border-radius: 50%;            z-index: 6;            box-shadow: 0 4px 10px rgba(0,0,0,0.15), inset 0 0 8px rgba(0,0,0,0.2);            display: flex;            justify-content: center;            align-items: center;            color: white;            font-size: 1.5rem;            transition: transform 0.3s ease;        }
-        .wax-seal::after {            content: ' ';        }
-        .envelope-container:hover .wax-seal {            transform: scale(1.1);        }
-        /* Open State Animations */        .wrapper.is-open .envelope-container::before {            transform: rotateX(180deg);            z-index: 1; /* Move behind so card can slide up */        }
-        .wrapper.is-open .envelope-container {            transform: translateY(100vh);            opacity: 0;            pointer-events: none;            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease 0.3s;        }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raghav & Anusha — Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#4a2f21; --secondary:#b8926a; --dark:#2c2520;
+    --light:#fdfaf4;   --gold-light:#f3ece0;
+    --env-front:#ecdcc5; --env-back:#decbad; --env-flap:#d4bf9c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Montserrat',sans-serif;background:var(--light);
+    color:var(--dark);text-align:center;min-height:100vh;
+    display:flex;justify-content:center;align-items:center;
+    padding:20px;overflow-x:hidden;
+  }
+  .wrapper{position:relative;width:100%;max-width:650px;display:flex;justify-content:center;align-items:center;}
 
-        /* ================= VIRTUAL INVITATION CARD ================= */        .main-card {            position: absolute;            width: 100%;            max-width: 600px;            background: white;            padding: 40px 20px;            border-radius: 4px;            box-shadow: 0 15px 40px rgba(74, 47, 33, 0.06);            border: 1px solid var(--gold-light);            opacity: 0;            transform: translateY(50px) scale(0.95);            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;            pointer-events: none;            z-index: 2;        }
-        .main-card::before {            content: '';            position: absolute;            top: 15px; bottom: 15px; left: 15px; right: 15px;            border: 1px solid var(--secondary);            opacity: 0.4;            pointer-events: none;        }
-        /* Reveal state for the card */        .wrapper.is-open .main-card {            opacity: 1;            transform: translateY(0) scale(1);            pointer-events: auto;        }
-        /* Card Elements */        .hashtag {            font-size: 0.8rem;            letter-spacing: 3px;            text-transform: uppercase;            color: var(--secondary);            margin-bottom: 12px;            font-weight: 500;        }
-        .subtitle-top {            font-family: 'Alex Brush', cursive;            font-size: 2.2rem;            color: var(--primary);            margin-bottom: 5px;        }
-        .announcement {            font-size: 0.8rem;            letter-spacing: 4px;            text-transform: uppercase;            color: var(--dark);            background: var(--gold-light);            padding: 6px 20px;            border-radius: 2px;            display: inline-block;            margin-bottom: 30px;            font-weight: 500;        }
-        .main-title {            font-size: 3rem;            color: var(--primary);            font-weight: 300;            letter-spacing: 4px;            line-height: 1.2;            margin-bottom: 10px;            text-transform: uppercase;        }
-        .ampersand {            font-family: 'Alex Brush', cursive;            font-size: 3rem;            color: var(--secondary);            display: block;            margin: 5px 0;            text-transform: lowercase;        }
-        @media (max-width: 600px) {            .envelope-container { width: 100%; height: 500px; }            .envelope-container::before { border-left-width: 175px; border-right-width: 175px; border-top-width: 200px; }            .envelope-container::after { border-left-width: 175px; border-right-width: 175px; border-bottom-width: 300px; }            .wax-seal { top: calc(200px - 30px); }            .main-title { font-size: 2.3rem; }            .ampersand { font-size: 2.5rem; }        }
-        .save-the-date {            font-size: 0.75rem;            letter-spacing: 3px;            text-transform: uppercase;            color: var(--secondary);            margin-top: 25px;            margin-bottom: 15px;        }
-        .date-container {            display: flex;            align-items: center;            justify-content: center;            gap: 15px;            border-top: 1px solid var(--secondary);            border-bottom: 1px solid var(--secondary);            padding: 8px 25px;            margin-bottom: 35px;            max-width: 300px;            margin-left: auto;            margin-right: auto;        }
-        .date-part {            font-size: 1rem;            letter-spacing: 2px;            text-transform: uppercase;        }
-        .date-main {            font-size: 1.8rem;            font-weight: 600;            color: var(--primary);        }
-        /* Countdown Timer */        .countdown-container {            display: flex;            gap: 12px;            justify-content: center;            margin-bottom: 40px;        }
-        .time-box {            background: #fff;            padding: 10px;            border-radius: 4px;            min-width: 65px;            border: 1px solid var(--gold-light);        }
-        .time-box span {            display: block;            font-size: 1.4rem;            font-weight: 500;            color: var(--primary);        }
-        .time-box label {            display: block;            font-size: 0.6rem;            text-transform: uppercase;            letter-spacing: 1px;            color: var(--secondary);            margin-top: 2px;        }
-        /* Details / Venue Card */        .venue-card {            background: #fbf9f5;            padding: 30px 20px;            border-radius: 4px;            border: 1px solid var(--gold-light);            margin: 20px auto 0 auto;            max-width: 480px;        }
-        .venue-title {            font-size: 1.2rem;            font-weight: 500;            color: var(--primary);            margin-bottom: 12px;            letter-spacing: 1px;            text-transform: uppercase;        }
-        .venue-text {            line-height: 1.7;            font-size: 0.9rem;            color: #554a42;            margin-bottom: 25px;        }
-        .map-btn {            display: inline-block;            background-color: var(--primary);            color: #fff;            text-decoration: none;            padding: 10px 30px;            font-size: 0.75rem;            font-weight: 500;            letter-spacing: 2px;            text-transform: uppercase;            transition: all 0.3s ease;            border: 1px solid var(--primary);        }
-        .map-btn:hover {            background-color: transparent;            color: var(--primary);        }
-        footer {            margin-top: 35px;            font-family: 'Alex Brush', cursive;            font-size: 1.6rem;            color: var(--secondary);        }    </style></head><body>
-    <div class="wrapper" id="revealWrapper">                <!-- Interactive Envelope View -->        <div class="envelope-container" onclick="openInvitation()">            <div class="wax-seal"></div>            <div class="envelope-text">Raghav &amp; Anusha</div>        </div>
-        <!-- Hidden Main Invitation Card -->        <main class="main-card">            <div class="hashtag">#RAGHAVwedsANUSHA</div>            <div class="subtitle-top">The Best Day is on its way!</div>            <div class="announcement">Engagement Fixed</div>                        <h1 class="main-title">                Raghav                 <span class="ampersand">&amp;</span>                 Anusha            </h1>                        <div class="save-the-date"> Save The Date </div>            <div class="date-container">                <div class="date-part">July</div>                <div class="date-main">06<span>th</span></div>                <div class="date-part">2026</div>            </div>                        <!-- Live Countdown -->            <div class="countdown-container">                <div class="time-box"><span id="days">00</span><label>Days</label></div>                <div class="time-box"><span id="hours">00</span><label>Hours</label></div>                <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>                <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>            </div>
-            <!-- Venue Details -->            <div class="venue-card">                <div class="venue-title">Club Vasantha</div>                <p class="venue-text">                    Sy No. 79, Vasantha City,<br>                    Bikshapathi Nagar, Hafeezpet,<br>                    Hyderabad, Telangana 500049                </p>                <a href="https://www.google.com/maps/search/?api=1&query=Club+Vasantha+Vasantha+City+Hafeezpet+Hyderabad" target="_blank" class="map-btn">Locate On Map</a>            </div>
-            <footer>                Two Hearts. One Beautiful Journey.            </footer>        </main>
-    </div>
-    <!-- Interactive Scripts -->    <script>        // Function to handle clicking and opening the envelope        function openInvitation() {            document.getElementById('revealWrapper').classList.add('is-open');        }
-        // Live Countdown Clock Calculations        const targetDate = new Date("July 6, 2026 00:00:00").getTime();
-        const countdown = setInterval(function() {            const now = new Date().getTime();            const difference = targetDate - now;
-            if (difference < 0) {                clearInterval(countdown);                document.querySelector(".countdown-container").innerHTML = "<p style='font-weight:500; color:var(--primary); letter-spacing:2px; text-transform:uppercase; font-size:0.85rem;'>The Celebration Has Begun!</p>";                return;            }
-            const d = Math.floor(difference / (1000 * 60 * 60 * 24));            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));            const s = Math.floor((difference % (1000 * 60)) / (1000 * 60));
-            document.getElementById("days").innerText = d < 10 ? "0" + d : d;            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;            document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;            document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;        }, 1000);    </script></body></html>
+  /* ============ ENVELOPE ============ */
+  .envelope{
+    position:relative;width:450px;height:300px;max-width:92vw;
+    cursor:pointer;perspective:1500px;
+    transition:transform .9s cubic-bezier(.4,0,.2,1),opacity .6s ease .3s;
+    z-index:10;
+  }
+  .env-body{
+    position:absolute;inset:0;background:var(--env-back);
+    border-radius:6px;box-shadow:0 30px 60px rgba(74,47,33,.25);
+    overflow:hidden;
+  }
+  /* Bottom + side flap (visible front pocket) */
+  .env-front{
+    position:absolute;left:0;right:0;bottom:0;height:65%;
+    background:var(--env-front);
+    clip-path:polygon(0 35%,50% 100%,100% 35%,100% 100%,0 100%);
+    z-index:3;
+  }
+  /* Top flap */
+  .env-flap{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+    background:var(--env-flap);
+    clip-path:polygon(0 0,100% 0,50% 65%);
+    transform-origin:top center;
+    transition:transform .6s ease;
+    z-index:5;
+  }
+  .wax-seal{
+    position:absolute;top:55%;left:50%;
+    transform:translate(-50%,-50%);
+    width:60px;height:60px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%,#e8c89a 0%,var(--secondary) 70%,#8e6a44 100%);
+    box-shadow:0 4px 10px rgba(0,0,0,.25),inset 0 0 8px rgba(0,0,0,.25);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-family:'Alex Brush',cursive;font-size:1.6rem;
+    z-index:6;transition:transform .3s ease;
+  }
+  .wax-seal::after{content:"R&A"}
+  .envelope:hover .wax-seal{transform:translate(-50%,-50%) scale(1.08)}
+  .env-text{
+    position:absolute;left:0;right:0;bottom:18%;
+    font-family:'Alex Brush',cursive;font-size:2.2rem;
+    color:var(--primary);z-index:4;pointer-events:none;
+  }
 
-On Thu, 18 Jun, 2026, 2:09 pm Hari K, <imkhrk@gmail.com> wrote:
-Here is your updated, ready-to-use HTML code based on the image 1000315481.jpg.I have extracted the correct names (**Raghav & Anusha**), the exact date (**July 06, 2026**), and the precise venue details for **Club Vasantha** in Hafeezpet. I also adjusted the countdown timer to match this new date and updated the theme to a premium gold, cream, and deep brown palette to mirror the elegant look of your card.### The Complete Code (index.html)```html<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Raghav & Anusha - Engagement Invitation</title>    <!-- Elegant Google Fonts -->    <link rel="preconnect" href="https://fonts.googleapis.com">    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">        <style>        :root {            --primary: #4a2f21;      /* Deep Elegant Brown */            --secondary: #b8926a;    /* Muted Gold Accent */            --dark: #2c2520;         /* Soft Charcoal Brown */            --light: #fdfaf4;        /* Cream/Ivory Background */            --gold-light: #f3ece0;   /* Light Card Border/Background */        }
-        * {            box-sizing: border-box;            margin: 0;            padding: 0;        }
-        body {            font-family: 'Montserrat', sans-serif;            background-color: var(--light);            color: var(--dark);            text-align: center;            overflow-x: hidden;        }
-        /* Hero / Cover Section */        .hero {            height: 100vh;            display: flex;            flex-direction: column;            justify-content: center;            align-items: center;            padding: 20px;            background: linear-gradient(rgba(253, 250, 244, 0.88), rgba(253, 250, 244, 0.88)),                         url('https://images.unsplash.com/photo-1545232979-8bf34eb9757b?q=80&w=1920&auto=format&fit=crop') no-repeat center center/cover;            position: relative;        }
-        .hero::before {            content: '';            position: absolute;            top: 20px; bottom: 20px; left: 20px; right: 20px;            border: 1px solid var(--secondary);            opacity: 0.5;            pointer-events: none;        }
-        .hashtag {            font-size: 0.8rem;            letter-spacing: 3px;            text-transform: uppercase;            color: var(--secondary);            margin-bottom: 15px;            font-weight: 500;        }
-        .subtitle-top {            font-family: 'Alex Brush', cursive;            font-size: 2.5rem;            color: var(--primary);            margin-bottom: 5px;        }
-        .announcement {            font-size: 0.85rem;            letter-spacing: 4px;            text-transform: uppercase;            color: var(--dark);            background: var(--gold-light);            padding: 6px 20px;            border-radius: 2px;            margin-bottom: 40px;            font-weight: 500;        }
-        .main-title {            font-size: 3.5rem;            color: var(--primary);            font-weight: 300;            letter-spacing: 4px;            line-height: 1.2;            margin-bottom: 10px;            text-transform: uppercase;            animation: fadeIn 2s ease-in-out;        }
-        .ampersand {            font-family: 'Alex Brush', cursive;            font-size: 3.5rem;            color: var(--secondary);            display: block;            margin: 5px 0;            text-transform: lowercase;        }
-        @media (max-width: 768px) {            .main-title { font-size: 2.6rem; }            .ampersand { font-size: 2.8rem; }        }
-        .save-the-date {            font-size: 0.75rem;            letter-spacing: 3px;            text-transform: uppercase;            color: var(--secondary);            margin-top: 30px;            margin-bottom: 15px;        }
-        .date-container {            display: flex;            align-items: center;            justify-content: center;            gap: 15px;            border-top: 1px solid var(--secondary);            border-bottom: 1px solid var(--secondary);            padding: 10px 25px;            margin-bottom: 40px;        }
-        .date-part {            font-size: 1.1rem;            letter-spacing: 2px;            text-transform: uppercase;        }
-        .date-main {            font-size: 2rem;            font-weight: 600;            color: var(--primary);        }
-        /* Countdown Timer */        .countdown-container {            display: flex;            gap: 15px;        }
-        .time-box {            background: rgba(255, 255, 255, 0.85);            padding: 12px;            border-radius: 4px;            min-width: 68px;            border: 1px solid var(--gold-light);            box-shadow: 0 4px 10px rgba(0,0,0,0.02);        }
-        .time-box span {            display: block;            font-size: 1.6rem;            font-weight: 500;            color: var(--primary);        }
-        .time-box label {            display: block;            font-size: 0.65rem;            text-transform: uppercase;            letter-spacing: 1px;            color: var(--secondary);            margin-top: 2px;        }
-        /* Details Section */        .details-section {            padding: 80px 20px;            max-width: 800px;            margin: 0 auto;        }
-        .section-title {            font-family: 'Alex Brush', cursive;            font-size: 3rem;            color: var(--secondary);            margin-bottom: 20px;        }
-        .details-card {            background: white;            padding: 40px;            border-radius: 4px;            box-shadow: 0 10px 30px rgba(74, 47, 33, 0.04);            border: 1px solid var(--gold-light);            margin-top: 30px;            position: relative;        }
-        .venue-title {            font-size: 1.4rem;            font-weight: 500;            color: var(--primary);            margin-bottom: 15px;            letter-spacing: 1px;            text-transform: uppercase;        }
-        .venue-text {            line-height: 1.8;            font-size: 0.95rem;            color: #554a42;            margin-bottom: 30px;            letter-spacing: 0.5px;        }
-        .map-btn {            display: inline-block;            background-color: var(--primary);            color: #fff;            text-decoration: none;            padding: 12px 35px;            border-radius: 2px;            font-size: 0.8rem;            font-weight: 500;            letter-spacing: 2px;            text-transform: uppercase;            transition: all 0.3s ease;            border: 1px solid var(--primary);        }
-        .map-btn:hover {            background-color: transparent;            color: var(--primary);        }
-        /* Footer */        footer {            padding: 50px 20px;            font-family: 'Alex Brush', cursive;            font-size: 1.8rem;            color: var(--secondary);            border-top: 1px solid var(--gold-light);            background-color: #fbf7f0;        }
-        @keyframes fadeIn {            from { opacity: 0; transform: translateY(15px); }            to { opacity: 1; transform: translateY(0); }        }    </style></head><body>
-    <!-- Cover Section -->    <section class="hero">        <div class="hashtag">#RAGHAVwedsANUSHA</div>        <div class="subtitle-top">The Best Day is on its way!</div>        <div class="announcement">Engagement Fixed</div>                <h1 class="main-title">            Raghav             <span class="ampersand">&amp;</span>             Anusha        </h1>                <div class="save-the-date"> Save The Date </div>        <div class="date-container">            <div class="date-part">July</div>            <div class="date-main">06<span>th</span></div>            <div class="date-part">2026</div>        </div>                <!-- Live Countdown -->        <div class="countdown-container">            <div class="time-box"><span id="days">00</span><label>Days</label></div>            <div class="time-box"><span id="hours">00</span><label>Hours</label></div>            <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>            <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>        </div>    </section>
-    <!-- Details Section -->    <section class="details-section">        <h2 class="section-title">The Venue</h2>                <div class="details-card">            <div class="venue-title">Club Vasantha</div>            <p class="venue-text">                Sy No. 79, Vasantha City,<br>                Bikshapathi Nagar, Hafeezpet,<br>                Hyderabad, Telangana 500049            </p>            <!-- Direct custom location query link for Club Vasantha, Hafeezpet -->            <a href="https://www.google.com/maps/search/?api=1&query=Club+Vasantha+Vasantha+City+Hafeezpet+Hyderabad" target="_blank" class="map-btn">Locate On Map</a>        </div>    </section>
-    <footer>        Two Hearts. One Beautiful Journey.    </footer>
-    <!-- Countdown Timer Logic for July 6, 2026 -->    <script>        const targetDate = new Date("July 6, 2026 00:00:00").getTime();
-        const countdown = setInterval(function() {            const now = new Date().getTime();            const difference = targetDate - now;
-            if (difference < 0) {                clearInterval(countdown);                document.querySelector(".countdown-container").innerHTML = "<p style='font-weight:500; color:var(--primary); letter-spacing:2px; text-transform:uppercase; font-size:0.9rem;'>The Celebration Has Begun!</p>";                return;            }
-            const d = Math.floor(difference / (1000 * 60 * 60 * 24));            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));            const s = Math.floor((difference % (1000 * 60)) / (1000 * 60));
-            document.getElementById("days").innerText = d < 10 ? "0" + d : d;            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;            document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;            document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;        }, 1000);    </script></body></html>
+  /* Open state */
+  .wrapper.is-open .env-flap{transform:rotateX(180deg);z-index:1}
+  .wrapper.is-open .wax-seal{opacity:0;transition:opacity .3s ease}
+  .wrapper.is-open .envelope{
+    transform:translateY(110vh) rotate(-3deg);opacity:0;pointer-events:none;
+  }
+
+  /* ============ INVITATION CARD ============ */
+  .main-card{
+    position:absolute;width:100%;max-width:600px;
+    background:#fff;padding:45px 25px;border-radius:4px;
+    box-shadow:0 15px 40px rgba(74,47,33,.08);
+    border:1px solid var(--gold-light);
+    opacity:0;transform:translateY(50px) scale(.95);
+    transition:opacity .8s cubic-bezier(.4,0,.2,1) .4s,transform .8s cubic-bezier(.4,0,.2,1) .4s;
+    pointer-events:none;z-index:2;
+  }
+  .main-card::before{
+    content:'';position:absolute;inset:15px;
+    border:1px solid var(--secondary);opacity:.4;pointer-events:none;
+  }
+  .wrapper.is-open .main-card{
+    opacity:1;transform:translateY(0) scale(1);pointer-events:auto;position:relative;
+  }
+
+  .hashtag{font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--secondary);margin-bottom:12px;font-weight:500}
+  .subtitle-top{font-family:'Alex Brush',cursive;font-size:1.9rem;color:var(--primary);margin-bottom:8px}
+  .announcement{
+    font-size:.75rem;letter-spacing:4px;text-transform:uppercase;color:var(--dark);
+    background:var(--gold-light);padding:6px 20px;border-radius:2px;
+    display:inline-block;margin-bottom:30px;font-weight:500;
+  }
+  .main-title{font-size:2.6rem;color:var(--primary);font-weight:300;letter-spacing:4px;line-height:1.2;margin-bottom:10px;text-transform:uppercase}
+  .ampersand{font-family:'Alex Brush',cursive;font-size:2.6rem;color:var(--secondary);display:block;margin:5px 0;text-transform:lowercase}
+
+  .save-the-date{font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--secondary);margin-top:25px;margin-bottom:15px}
+  .date-container{
+    display:flex;align-items:center;justify-content:center;gap:15px;
+    border-top:1px solid var(--secondary);border-bottom:1px solid var(--secondary);
+    padding:8px 25px;margin:0 auto 35px;max-width:300px;
+  }
+  .date-part{font-size:1rem;letter-spacing:2px;text-transform:uppercase}
+  .date-main{font-size:1.8rem;font-weight:600;color:var(--primary)}
+  .date-main sup{font-size:.7rem;font-weight:500;margin-left:2px;vertical-align:super}
+
+  .countdown-container{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+  .time-box{background:#fff;padding:10px 6px;border-radius:4px;min-width:62px;border:1px solid var(--gold-light)}
+  .time-box span{display:block;font-size:1.4rem;font-weight:500;color:var(--primary)}
+  .time-box label{display:block;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--secondary);margin-top:2px}
+
+  .venue-card{background:#fbf9f5;padding:30px 20px;border-radius:4px;border:1px solid var(--gold-light);margin:20px auto 0;max-width:480px}
+  .venue-title{font-size:1.15rem;font-weight:500;color:var(--primary);margin-bottom:12px;letter-spacing:1px;text-transform:uppercase}
+  .venue-text{line-height:1.7;font-size:.9rem;color:#554a42;margin-bottom:25px}
+  .map-btn{
+    display:inline-block;background:var(--primary);color:#fff;text-decoration:none;
+    padding:10px 30px;font-size:.75rem;font-weight:500;letter-spacing:2px;
+    text-transform:uppercase;transition:all .3s ease;border:1px solid var(--primary);
+  }
+  .map-btn:hover{background:transparent;color:var(--primary)}
+  footer{margin-top:35px;font-family:'Alex Brush',cursive;font-size:1.6rem;color:var(--secondary)}
+
+  @media (max-width:600px){
+    .envelope{height:260px}
+    .main-title{font-size:2rem;letter-spacing:3px}
+    .ampersand{font-size:2.2rem}
+    .env-text{font-size:1.7rem}
+    .main-card{padding:35px 18px}
+  }
+</style>
+</head>
+<body>
+  <div class="wrapper" id="revealWrapper">
+
+    <!-- Envelope -->
+    <div class="envelope" onclick="openInvitation()" aria-label="Open invitation">
+      <div class="env-body">
+        <div class="env-front"></div>
+        <div class="env-text">Raghav &amp; Anusha</div>
+      </div>
+      <div class="env-flap"></div>
+      <div class="wax-seal"></div>
+    </div>
+
+    <!-- Invitation Card -->
+    <main class="main-card">
+      <div class="hashtag">#RAGHAVwedsANUSHA</div>
+      <div class="subtitle-top">The Best Day is on its way!</div>
+      <div class="announcement">Engagement Fixed</div>
+
+      <h1 class="main-title">
+        Raghav
+        <span class="ampersand">&amp;</span>
+        Anusha
+      </h1>
+
+      <div class="save-the-date">Save The Date</div>
+      <div class="date-container">
+        <div class="date-part">July</div>
+        <div class="date-main">06<sup>th</sup></div>
+        <div class="date-part">2026</div>
+      </div>
+
+      <div class="countdown-container">
+        <div class="time-box"><span id="days">00</span><label>Days</label></div>
+        <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
+        <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>
+        <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-title">Club Vasantha</div>
+        <p class="venue-text">
+          Sy No. 79, Vasantha City,<br>
+          Bikshapathi Nagar, Hafeezpet,<br>
+          Hyderabad, Telangana 500049
+        </p>
+        <a href="https://www.google.com/maps/search/?api=1&query=Club+Vasantha+Vasantha+City+Hafeezpet+Hyderabad"
+           target="_blank" rel="noopener" class="map-btn">Locate On Map</a>
+      </div>
+
+      <footer>Two Hearts. One Beautiful Journey.</footer>
+    </main>
+  </div>
+
+<script>
+  function openInvitation(){
+    document.getElementById('revealWrapper').classList.add('is-open');
+  }
+
+  const targetDate = new Date("July 6, 2026 00:00:00").getTime();
+  const $ = id => document.getElementById(id);
+  const pad = n => n < 10 ? "0" + n : n;
+
+  const countdown = setInterval(() => {
+    const diff = targetDate - Date.now();
+    if (diff < 0){
+      clearInterval(countdown);
+      document.querySelector(".countdown-container").innerHTML =
+        "<p style='font-weight:500;color:var(--primary);letter-spacing:2px;text-transform:uppercase;font-size:.85rem;'>The Celebration Has Begun!</p>";
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);   // ← fixed
+    $("days").innerText = pad(d);
+    $("hours").innerText = pad(h);
+    $("minutes").innerText = pad(m);
+    $("seconds").innerText = pad(s);
+  }, 1000);
+</script>
+</body>
+</html>
