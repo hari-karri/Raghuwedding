@@ -2,68 +2,56 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Raghav & Anusha — Invitation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#4a2f21">
+<title>Raghav & Anusha — Engagement Invitation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --primary:#4a2f21; --secondary:#b8926a; --dark:#2c2520;
     --light:#fdfaf4;   --gold-light:#f3ece0;
     --env-front:#ecdcc5; --env-back:#decbad; --env-flap:#d4bf9c;
+    --safe-t:env(safe-area-inset-top); --safe-b:env(safe-area-inset-bottom);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{width:100%;min-height:100%}
   body{
     font-family:'Montserrat',sans-serif;
     background:var(--light);color:var(--dark);text-align:center;
-    min-height:100vh;min-height:100dvh;
-    overflow-x:hidden;
+    min-height:100vh;min-height:100dvh;overflow-x:hidden;
   }
 
   .stage{
-    position:relative;
-    min-height:100vh;min-height:100dvh;
+    position:relative;min-height:100vh;min-height:100dvh;
     display:grid;place-items:center;
-    padding:24px 16px;
+    padding:calc(24px + var(--safe-t)) 16px calc(24px + var(--safe-b));
   }
-  .wrapper{
-    position:relative;width:100%;max-width:640px;
-    display:grid;place-items:center;
-  }
+  .wrapper{position:relative;width:100%;max-width:640px;display:grid;place-items:center;}
 
   /* ============ ENVELOPE ============ */
   .envelope{
-    position:relative;
-    width:min(450px,92vw);
-    aspect-ratio:3/2;
+    position:relative;width:min(450px,92vw);aspect-ratio:3/2;
     cursor:pointer;perspective:1500px;
     transition:transform .9s cubic-bezier(.4,0,.2,1),opacity .6s ease .3s;
     z-index:10;
   }
   .env-body{
     position:absolute;inset:0;background:var(--env-back);
-    border-radius:6px;box-shadow:0 30px 60px rgba(74,47,33,.25);
-    overflow:hidden;
+    border-radius:6px;box-shadow:0 30px 60px rgba(74,47,33,.25);overflow:hidden;
   }
   .env-front{
-    position:absolute;left:0;right:0;bottom:0;height:65%;
-    background:var(--env-front);
-    clip-path:polygon(0 35%,50% 100%,100% 35%,100% 100%,0 100%);
-    z-index:3;
+    position:absolute;left:0;right:0;bottom:0;height:65%;background:var(--env-front);
+    clip-path:polygon(0 35%,50% 100%,100% 35%,100% 100%,0 100%);z-index:3;
   }
   .env-flap{
-    position:absolute;top:0;left:0;width:100%;height:100%;
-    background:var(--env-flap);
+    position:absolute;top:0;left:0;width:100%;height:100%;background:var(--env-flap);
     clip-path:polygon(0 0,100% 0,50% 65%);
-    transform-origin:top center;
-    transition:transform .6s ease;
-    z-index:5;
+    transform-origin:top center;transition:transform .6s ease;z-index:5;
   }
   .wax-seal{
-    position:absolute;top:55%;left:50%;
-    transform:translate(-50%,-50%);
+    position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);
     width:clamp(48px,12%,68px);aspect-ratio:1;border-radius:50%;
     background:radial-gradient(circle at 35% 35%,#e8c89a 0%,var(--secondary) 70%,#8e6a44 100%);
     box-shadow:0 4px 10px rgba(0,0,0,.25),inset 0 0 8px rgba(0,0,0,.25);
@@ -75,37 +63,46 @@
   .envelope:hover .wax-seal{transform:translate(-50%,-50%) scale(1.08)}
   .env-text{
     position:absolute;left:0;right:0;bottom:16%;
-    font-family:'Alex Brush',cursive;
-    font-size:clamp(1.4rem,5vw,2.2rem);
+    font-family:'Alex Brush',cursive;font-size:clamp(1.4rem,5vw,2.2rem);
     color:var(--primary);z-index:4;pointer-events:none;
   }
   .hint{
     position:absolute;left:0;right:0;bottom:-32px;
     font-size:.7rem;letter-spacing:3px;text-transform:uppercase;
-    color:var(--secondary);opacity:.8;
-    animation:pulse 2s ease-in-out infinite;
+    color:var(--secondary);opacity:.8;animation:pulse 2s ease-in-out infinite;
   }
   @keyframes pulse{0%,100%{opacity:.4}50%{opacity:.9}}
 
+  /* Idle gold sparkles around envelope */
+  .sparkle{
+    position:absolute;width:4px;height:4px;border-radius:50%;
+    background:radial-gradient(circle,#f5d9a8 0%,rgba(245,217,168,0) 70%);
+    pointer-events:none;opacity:0;z-index:11;
+    animation:sparkleFloat 4s ease-in-out infinite;
+  }
+  @keyframes sparkleFloat{
+    0%{opacity:0;transform:translate(0,0) scale(.5)}
+    20%{opacity:1;transform:translate(var(--dx),var(--dy)) scale(1)}
+    80%{opacity:1;transform:translate(calc(var(--dx)*1.5),calc(var(--dy)*1.5)) scale(.8)}
+    100%{opacity:0;transform:translate(calc(var(--dx)*2),calc(var(--dy)*2)) scale(.3)}
+  }
+
   .wrapper.is-open .env-flap{transform:rotateX(180deg);z-index:1}
   .wrapper.is-open .wax-seal{opacity:0}
-  .wrapper.is-open .hint{display:none}
+  .wrapper.is-open .hint,.wrapper.is-open .sparkle{display:none}
   .wrapper.is-open .envelope{
-    transform:translateY(110vh) rotate(-3deg);opacity:0;pointer-events:none;
-    position:absolute;
+    transform:translateY(110vh) rotate(-3deg);opacity:0;pointer-events:none;position:absolute;
   }
 
   /* ============ INVITATION CARD ============ */
   .main-card{
-    width:100%;max-width:600px;
-    background:#fff;padding:clamp(28px,5vw,48px) clamp(18px,4vw,28px);
-    border-radius:4px;
-    box-shadow:0 15px 40px rgba(74,47,33,.08);
+    width:100%;max-width:600px;background:#fff;
+    padding:clamp(28px,5vw,48px) clamp(18px,4vw,28px);
+    border-radius:4px;box-shadow:0 15px 40px rgba(74,47,33,.08);
     border:1px solid var(--gold-light);
     opacity:0;transform:translateY(40px) scale(.96);
     transition:opacity .8s cubic-bezier(.4,0,.2,1) .4s,transform .8s cubic-bezier(.4,0,.2,1) .4s;
-    pointer-events:none;
-    position:absolute;
+    pointer-events:none;position:absolute;
   }
   .main-card::before{
     content:'';position:absolute;inset:15px;
@@ -115,32 +112,49 @@
     position:relative;opacity:1;transform:translateY(0) scale(1);pointer-events:auto;
   }
 
+  /* Scroll-reveal blocks */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
   .hashtag{font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--secondary);margin-bottom:12px;font-weight:500}
   .subtitle-top{font-family:'Alex Brush',cursive;font-size:clamp(1.6rem,4.5vw,2.1rem);color:var(--primary);margin-bottom:8px}
   .announcement{
     font-size:.75rem;letter-spacing:4px;text-transform:uppercase;color:var(--dark);
     background:var(--gold-light);padding:6px 20px;border-radius:2px;
-    display:inline-block;margin-bottom:30px;font-weight:500;
+    display:inline-block;margin-bottom:24px;font-weight:500;
   }
+
+  /* Monogram */
+  .monogram{
+    width:64px;height:64px;margin:0 auto 16px;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--secondary);border-radius:50%;
+    font-family:'Alex Brush',cursive;font-size:1.8rem;color:var(--secondary);
+    background:radial-gradient(circle,#fff,var(--gold-light));
+    box-shadow:0 2px 12px rgba(184,146,106,.15);
+  }
+
   .main-title{
-    font-size:clamp(1.9rem,6vw,2.8rem);
-    color:var(--primary);font-weight:300;letter-spacing:4px;line-height:1.2;
-    margin-bottom:10px;text-transform:uppercase;
+    font-size:clamp(1.9rem,6vw,2.8rem);color:var(--primary);font-weight:300;
+    letter-spacing:4px;line-height:1.2;margin-bottom:10px;text-transform:uppercase;
   }
   .ampersand{
-    font-family:'Alex Brush',cursive;
-    font-size:clamp(2rem,6vw,2.8rem);
+    font-family:'Alex Brush',cursive;font-size:clamp(2rem,6vw,2.8rem);
     color:var(--secondary);display:block;margin:5px 0;text-transform:lowercase;
   }
   .save-the-date{font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--secondary);margin-top:25px;margin-bottom:15px}
   .date-container{
     display:flex;align-items:center;justify-content:center;gap:15px;
     border-top:1px solid var(--secondary);border-bottom:1px solid var(--secondary);
-    padding:8px 25px;margin:0 auto 35px;max-width:300px;
+    padding:8px 25px;margin:0 auto 8px;max-width:300px;
   }
   .date-part{font-size:1rem;letter-spacing:2px;text-transform:uppercase}
   .date-main{font-size:1.8rem;font-weight:600;color:var(--primary)}
   .date-main sup{font-size:.7rem;font-weight:500;margin-left:2px;vertical-align:super}
+  .day-of-week{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    color:var(--secondary);font-size:.95rem;letter-spacing:2px;margin-bottom:30px;
+  }
 
   .countdown-container{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
   .time-box{background:#fff;padding:10px 6px;border-radius:4px;min-width:62px;border:1px solid var(--gold-light)}
@@ -150,154 +164,102 @@
   .venue-card{background:#fbf9f5;padding:30px 20px;border-radius:4px;border:1px solid var(--gold-light);margin:20px auto 0;max-width:480px}
   .venue-title{font-size:1.15rem;font-weight:500;color:var(--primary);margin-bottom:12px;letter-spacing:1px;text-transform:uppercase}
   .venue-text{line-height:1.7;font-size:.9rem;color:#554a42;margin-bottom:25px}
-  .map-btn{
-    display:inline-block;background:var(--primary);color:#fff;text-decoration:none;
-    padding:10px 30px;font-size:.75rem;font-weight:500;letter-spacing:2px;
+
+  /* Action buttons row */
+  .action-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .action-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--primary);color:#fff;text-decoration:none;
+    padding:11px 22px;font-size:.72rem;font-weight:500;letter-spacing:2px;
     text-transform:uppercase;transition:all .3s ease;border:1px solid var(--primary);
+    cursor:pointer;font-family:inherit;border-radius:2px;
   }
-  .map-btn:hover{background:transparent;color:var(--primary)}
+  .action-btn:hover{background:transparent;color:var(--primary)}
+  .action-btn.ghost{background:transparent;color:var(--primary)}
+  .action-btn.ghost:hover{background:var(--primary);color:#fff}
+  .action-btn svg{width:14px;height:14px;fill:currentColor}
+
   footer{margin-top:35px;font-family:'Alex Brush',cursive;font-size:1.6rem;color:var(--secondary)}
 
-  /* ============ PHOTOGRAPHY PARTNER ============ */
-  .photo-partner{
-    position:relative;
-    margin:32px auto 0;
-    max-width:480px;
-    padding:0;
-  }
-
-  /* Thin ornamental divider */
-  .photo-divider{
-    display:flex;align-items:center;gap:12px;
-    margin-bottom:28px;
-  }
+  /* ============ PHOTOGRAPHY PARTNER (with hover lift) ============ */
+  .photo-partner{position:relative;margin:32px auto 0;max-width:480px;padding:0;}
+  .photo-divider{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
   .photo-divider::before,.photo-divider::after{
     content:'';flex:1;height:1px;
-    background:linear-gradient(to right,transparent,var(--secondary),transparent);
-    opacity:.6;
+    background:linear-gradient(to right,transparent,var(--secondary),transparent);opacity:.6;
   }
-  .photo-divider-icon{
-    font-family:'Alex Brush',cursive;
-    font-size:1.05rem;color:var(--secondary);
-    letter-spacing:2px;white-space:nowrap;
-  }
+  .photo-divider-icon{font-family:'Alex Brush',cursive;font-size:1.05rem;color:var(--secondary);letter-spacing:2px;white-space:nowrap;}
 
   .photo-card{
     background:linear-gradient(145deg,#1a1210 0%,#2c1f17 60%,#3a2518 100%);
-    border-radius:6px;
-    padding:28px 24px 24px;
-    position:relative;
-    overflow:hidden;
+    border-radius:6px;padding:28px 24px 24px;position:relative;overflow:hidden;
     box-shadow:0 8px 32px rgba(74,47,33,.22);
+    transition:transform .4s cubic-bezier(.4,0,.2,1),box-shadow .4s ease;
   }
-
-  /* Film-strip perforations — top & bottom */
-  .film-strip{
-    position:absolute;left:0;right:0;height:18px;
-    display:flex;align-items:center;justify-content:space-around;
-    padding:0 8px;
+  .photo-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 16px 44px rgba(74,47,33,.32),0 0 32px rgba(184,146,106,.15);
   }
-  .film-strip.top{top:0;}
-  .film-strip.bottom{bottom:0;}
-  .film-hole{
-    width:10px;height:10px;border-radius:2px;
-    background:rgba(255,255,255,.06);
-  }
-
-  /* Lens flare accent — decorative circle top-right */
+  .film-strip{position:absolute;left:0;right:0;height:18px;display:flex;align-items:center;justify-content:space-around;padding:0 8px;}
+  .film-strip.top{top:0;} .film-strip.bottom{bottom:0;}
+  .film-hole{width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,.06);}
   .photo-card::after{
-    content:'';
-    position:absolute;top:-40px;right:-40px;
-    width:110px;height:110px;border-radius:50%;
-    background:radial-gradient(circle,rgba(184,146,106,.18) 0%,transparent 70%);
-    pointer-events:none;
+    content:'';position:absolute;top:-40px;right:-40px;width:110px;height:110px;border-radius:50%;
+    background:radial-gradient(circle,rgba(184,146,106,.18) 0%,transparent 70%);pointer-events:none;
   }
-
-  .photo-badge{
-    display:inline-flex;align-items:center;gap:6px;
-    background:rgba(184,146,106,.15);
-    border:1px solid rgba(184,146,106,.3);
-    border-radius:20px;padding:4px 14px;
-    margin-bottom:16px;
-  }
-  .photo-badge-dot{
-    width:6px;height:6px;border-radius:50%;
-    background:var(--secondary);
-    animation:blink 2.4s ease-in-out infinite;
-  }
+  .photo-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(184,146,106,.15);border:1px solid rgba(184,146,106,.3);border-radius:20px;padding:4px 14px;margin-bottom:16px;}
+  .photo-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--secondary);animation:blink 2.4s ease-in-out infinite;}
   @keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
-  .photo-badge-text{
-    font-size:.6rem;letter-spacing:3px;text-transform:uppercase;
-    color:var(--secondary);font-weight:600;
-  }
-
-  /* Camera shutter SVG icon */
-  .shutter-icon{
-    width:44px;height:44px;margin:0 auto 14px;
-    opacity:.9;
-  }
-
-  .photo-brand{
-    font-family:'Alex Brush',cursive;
-    font-size:clamp(1.7rem,5.5vw,2.2rem);
-    color:#f5e6d3;
-    line-height:1.1;margin-bottom:4px;
-    text-shadow:0 2px 12px rgba(184,146,106,.3);
-  }
-  .photo-year{
-    font-size:.65rem;letter-spacing:5px;text-transform:uppercase;
-    color:rgba(184,146,106,.7);margin-bottom:14px;font-weight:500;
-  }
-
-  .photo-tagline{
-    font-size:.78rem;color:rgba(245,230,211,.65);
-    font-style:italic;font-weight:300;letter-spacing:.5px;
-    margin-bottom:22px;line-height:1.6;
-  }
-
-  /* Divider rule inside dark card */
-  .photo-inner-rule{
-    width:48px;height:1px;
-    background:linear-gradient(to right,transparent,rgba(184,146,106,.6),transparent);
-    margin:0 auto 22px;
-  }
-
-  .photo-contacts{
-    display:flex;flex-direction:column;gap:12px;
-  }
-  .photo-contact-row{
-    display:flex;align-items:center;justify-content:center;gap:10px;
-    text-decoration:none;
-    transition:opacity .25s;
-  }
-  .photo-contact-row:hover{opacity:.75}
-
-  .contact-icon{
-    width:30px;height:30px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
-  }
-  .contact-icon.insta{
-    background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
-  }
-  .contact-icon.whatsapp{
-    background:#25d366;
-  }
+  .photo-badge-text{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--secondary);font-weight:600;}
+  .shutter-icon{width:44px;height:44px;margin:0 auto 14px;opacity:.9;}
+  .photo-brand{font-family:'Alex Brush',cursive;font-size:clamp(1.7rem,5.5vw,2.2rem);color:#f5e6d3;line-height:1.1;margin-bottom:4px;text-shadow:0 2px 12px rgba(184,146,106,.3);}
+  .photo-year{font-size:.65rem;letter-spacing:5px;text-transform:uppercase;color:rgba(184,146,106,.7);margin-bottom:14px;font-weight:500;}
+  .photo-tagline{font-size:.78rem;color:rgba(245,230,211,.65);font-style:italic;font-weight:300;letter-spacing:.5px;margin-bottom:22px;line-height:1.6;}
+  .photo-inner-rule{width:48px;height:1px;background:linear-gradient(to right,transparent,rgba(184,146,106,.6),transparent);margin:0 auto 22px;}
+  .photo-contacts{display:flex;flex-direction:column;gap:12px;}
+  .photo-contact-row{display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;transition:opacity .25s,transform .25s;}
+  .photo-contact-row:hover{opacity:.85;transform:translateX(3px)}
+  .contact-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .contact-icon.insta{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);}
+  .contact-icon.whatsapp{background:#25d366;}
   .contact-icon svg{width:15px;height:15px;fill:#fff;}
-
   .contact-detail{text-align:left;}
   .contact-label{font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(184,146,106,.6);display:block;margin-bottom:1px;}
   .contact-value{font-size:.82rem;color:#f5e6d3;font-weight:400;letter-spacing:.3px;}
 
-  /* ============ PETALS CANVAS ============ */
-  #petals{
-    position:fixed;inset:0;width:100%;height:100%;
-    pointer-events:none;z-index:50;
+  /* ============ FLOATING CONTROLS ============ */
+  .float-controls{
+    position:fixed;top:calc(16px + var(--safe-t));right:16px;
+    display:flex;gap:8px;z-index:60;opacity:0;pointer-events:none;
+    transition:opacity .5s ease 1s;
   }
+  .wrapper.is-open ~ .float-controls,
+  body.opened .float-controls{opacity:1;pointer-events:auto}
+  .float-btn{
+    width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
+    background:rgba(255,255,255,.9);backdrop-filter:blur(8px);
+    box-shadow:0 4px 14px rgba(74,47,33,.15);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--primary);transition:transform .25s,background .25s;
+  }
+  .float-btn:hover{transform:scale(1.08);background:#fff}
+  .float-btn svg{width:18px;height:18px;fill:currentColor}
+  .float-btn.active{background:var(--secondary);color:#fff}
 
-  @media (prefers-reduced-motion:reduce){
-    *{transition:none!important;animation:none!important}
+  /* Toast */
+  .toast{
+    position:fixed;bottom:calc(24px + var(--safe-b));left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--primary);color:#fff;padding:10px 20px;
+    font-size:.75rem;letter-spacing:2px;text-transform:uppercase;
+    border-radius:4px;opacity:0;pointer-events:none;
+    transition:opacity .3s,transform .3s;z-index:100;
   }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  #petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50;}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
@@ -313,70 +275,93 @@
         <div class="env-flap"></div>
         <div class="wax-seal"></div>
         <div class="hint">Tap to open ✦</div>
+        <!-- Idle sparkles -->
+        <span class="sparkle" style="left:10%;top:20%;--dx:-15px;--dy:-20px;animation-delay:0s"></span>
+        <span class="sparkle" style="left:85%;top:25%;--dx:18px;--dy:-15px;animation-delay:.8s"></span>
+        <span class="sparkle" style="left:15%;top:75%;--dx:-12px;--dy:18px;animation-delay:1.6s"></span>
+        <span class="sparkle" style="left:88%;top:70%;--dx:20px;--dy:22px;animation-delay:2.4s"></span>
+        <span class="sparkle" style="left:50%;top:5%;--dx:5px;--dy:-25px;animation-delay:3.2s"></span>
       </div>
 
       <!-- Invitation Card -->
       <main class="main-card">
-        <div class="hashtag">#RAGHAVwedsANUSHA</div>
-        <div class="subtitle-top">The Best Day is on its way!</div>
-        <div class="announcement">Engagement Fixed</div>
-
-        <h1 class="main-title">
-          Raghav
-          <span class="ampersand">&amp;</span>
-          Anusha
-        </h1>
-
-        <div class="save-the-date">Save The Date</div>
-        <div class="date-container">
-          <div class="date-part">July</div>
-          <div class="date-main">06<sup>th</sup></div>
-          <div class="date-part">2026</div>
+        <div class="reveal">
+          <div class="monogram">R&amp;A</div>
+          <div class="hashtag">#RAGHAVwedsANUSHA</div>
+          <div class="subtitle-top">The Best Day is on its way!</div>
+          <div class="announcement">Engagement Fixed</div>
         </div>
 
-        <div class="countdown-container">
-          <div class="time-box"><span id="days">00</span><label>Days</label></div>
-          <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
-          <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>
-          <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>
+        <div class="reveal">
+          <h1 class="main-title">
+            Raghav <span class="ampersand">&amp;</span> Anusha
+          </h1>
         </div>
 
-        <div class="venue-card">
-          <div class="venue-title">Club Vasantha</div>
-          <p class="venue-text">
-            Sy No. 79, Vasantha City,<br>
-            Bikshapathi Nagar, Hafeezpet,<br>
-            Hyderabad, Telangana 500049
-          </p>
-          <a href="https://www.google.com/maps/search/?api=1&query=Club+Vasantha+Vasantha+City+Hafeezpet+Hyderabad"
-             target="_blank" rel="noopener" class="map-btn">Locate On Map</a>
+        <div class="reveal">
+          <div class="save-the-date">Save The Date</div>
+          <div class="date-container">
+            <div class="date-part">July</div>
+            <div class="date-main">06<sup>th</sup></div>
+            <div class="date-part">2026</div>
+          </div>
+          <div class="day-of-week">~ Monday Evening ~</div>
+        </div>
+
+        <div class="reveal">
+          <div class="countdown-container">
+            <div class="time-box"><span id="days">00</span><label>Days</label></div>
+            <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
+            <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>
+            <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <div class="venue-card">
+            <div class="venue-title">Club Vasantha</div>
+            <p class="venue-text">
+              Sy No. 79, Vasantha City,<br>
+              Bikshapathi Nagar, Hafeezpet,<br>
+              Hyderabad, Telangana 500049
+            </p>
+            <div class="action-row">
+              .com/maps/search/?api=1&query=Club+Vasantha+Vasantha+City+Hafeezpet+Hyderabad"
+                 target="_blank" rel="noopener" class="action-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+                Locate On Map
+              </a>
+              <button class="action-btn ghost" onclick="downloadICS()">
+                <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h5v5H7z"/></svg>
+                Add to Calendar
+              </button>
+              <button class="action-btn ghost" onclick="shareInvite()">
+                <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+                Share Invite
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- ===== PHOTOGRAPHY PARTNER ===== -->
+        <div class="reveal">
         <div class="photo-partner">
           <div class="photo-divider">
             <span class="photo-divider-icon">✦ Photography Partner ✦</span>
           </div>
-
           <div class="photo-card">
-            <!-- Film strip top -->
             <div class="film-strip top">
               <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
               <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
               <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
             </div>
-
-            <!-- Badge -->
             <div class="photo-badge">
               <div class="photo-badge-dot"></div>
               <span class="photo-badge-text">Official Partner</span>
             </div>
-
-            <!-- Camera shutter icon -->
             <svg class="shutter-icon" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
               <circle cx="22" cy="22" r="20" fill="none" stroke="rgba(184,146,106,0.5)" stroke-width="1.5"/>
               <circle cx="22" cy="22" r="8" fill="none" stroke="#b8926a" stroke-width="1.5"/>
-              <!-- shutter blades -->
               <line x1="22" y1="2" x2="22" y2="14" stroke="rgba(184,146,106,0.45)" stroke-width="1.5" stroke-linecap="round"/>
               <line x1="22" y1="30" x2="22" y2="42" stroke="rgba(184,146,106,0.45)" stroke-width="1.5" stroke-linecap="round"/>
               <line x1="2" y1="22" x2="14" y2="22" stroke="rgba(184,146,106,0.45)" stroke-width="1.5" stroke-linecap="round"/>
@@ -387,16 +372,12 @@
               <line x1="14.2" y1="29.8" x2="6.1" y2="37.9" stroke="rgba(184,146,106,0.3)" stroke-width="1.5" stroke-linecap="round"/>
               <circle cx="22" cy="22" r="3.5" fill="#b8926a" opacity="0.85"/>
             </svg>
-
             <div class="photo-brand">URS Photography</div>
             <div class="photo-year">est. 2020</div>
             <p class="photo-tagline">Capturing the moments of our journey</p>
-
             <div class="photo-inner-rule"></div>
-
             <div class="photo-contacts">
-              <a href="https://instagram.com/urs_photography2020"
-                 target="_blank" rel="noopener" class="photo-contact-row">
+               target="_blank" rel="noopener" class="photo-contact-row">
                 <div class="contact-icon insta">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
@@ -407,9 +388,7 @@
                   <span class="contact-value">@urs_photography2020</span>
                 </div>
               </a>
-
-              <a href="https://wa.me/918341818861"
-                 target="_blank" rel="noopener" class="photo-contact-row">
+              <a href="https://wa.me/918341818861" target="_blank" rel="noopener" class="photo-contact-row">
                 <div class="contact-icon whatsapp">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -421,8 +400,6 @@
                 </div>
               </a>
             </div>
-
-            <!-- Film strip bottom -->
             <div class="film-strip bottom">
               <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
               <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
@@ -430,143 +407,229 @@
             </div>
           </div>
         </div>
-        <!-- ===== END PHOTOGRAPHY PARTNER ===== -->
+        </div>
 
-        <footer>Two Hearts. One Beautiful Journey.</footer>
+        <div class="reveal"><footer>Two Hearts. One Beautiful Journey.</footer></div>
       </main>
     </div>
   </div>
 
+  <!-- Floating controls -->
+  <div class="float-controls">
+    <button class="float-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music">
+      <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    </button>
+    <button class="float-btn" onclick="replayReveal()" aria-label="Replay">
+      <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+    </button>
+  </div>
+
+  <div class="toast" id="toast"></div>
   <canvas id="petals"></canvas>
 
 <script>
+  /* ---------- OPEN / REPLAY ---------- */
   function openInvitation(){
     const w = document.getElementById('revealWrapper');
     if(w.classList.contains('is-open')) return;
     w.classList.add('is-open');
+    document.body.classList.add('opened');
     playRustle();
     setTimeout(startPetals, 500);
+    setTimeout(initScrollReveal, 800);
+  }
+  function replayReveal(){
+    const w = document.getElementById('revealWrapper');
+    w.classList.remove('is-open');
+    document.body.classList.remove('opened');
+    document.querySelectorAll('.reveal').forEach(el => el.classList.remove('in'));
+    window.scrollTo({top:0,behavior:'smooth'});
   }
 
+  /* ---------- SCROLL REVEAL ---------- */
+  function initScrollReveal(){
+    const els = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:0.15});
+    els.forEach(el => io.observe(el));
+  }
+
+  /* ---------- 🔊 PAPER RUSTLE ---------- */
   function playRustle(){
     try{
       const Ctx = window.AudioContext || window.webkitAudioContext;
       if(!Ctx) return;
       const ctx = new Ctx();
-      const duration = 1.1;
-      const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for(let i=0;i<data.length;i++){
-        const t = i / ctx.sampleRate;
-        const envelope = Math.pow(1 - t/duration, 1.8);
-        const noise = (Math.random()*2-1) * 0.6;
-        const crackle = Math.random() > 0.985 ? (Math.random()*2-1) : 0;
-        data[i] = (noise + crackle) * envelope * 0.45;
+      const dur = 1.1;
+      const buf = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for(let i=0;i<d.length;i++){
+        const t = i/ctx.sampleRate, env = Math.pow(1-t/dur,1.8);
+        const noise = (Math.random()*2-1)*0.6;
+        const crack = Math.random()>0.985 ? (Math.random()*2-1) : 0;
+        d[i] = (noise+crack) * env * 0.45;
       }
-      const src = ctx.createBufferSource();
-      src.buffer = buffer;
-      const hp = ctx.createBiquadFilter();
-      hp.type = 'highpass'; hp.frequency.value = 1800;
-      const bp = ctx.createBiquadFilter();
-      bp.type = 'bandpass'; bp.frequency.value = 4500; bp.Q.value = 0.6;
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.6, ctx.currentTime + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
-      src.connect(hp).connect(bp).connect(gain).connect(ctx.destination);
-      src.start();
-      src.onended = () => ctx.close();
+      const src = ctx.createBufferSource(); src.buffer = buf;
+      const hp = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=1800;
+      const bp = ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=4500; bp.Q.value=0.6;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.6, ctx.currentTime+0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+dur);
+      src.connect(hp).connect(bp).connect(g).connect(ctx.destination);
+      src.start(); src.onended = () => ctx.close();
     }catch(e){}
   }
 
-  const canvas = document.getElementById('petals');
-  const ctx = canvas.getContext('2d');
-  let petals = [], petalAnim = null, petalsActive = false;
-
-  function resizeCanvas(){
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
+  /* ---------- 🎵 AMBIENT MUSIC TOGGLE ---------- */
+  let musicCtx = null, musicNodes = [], musicOn = false;
+  function toggleMusic(){
+    const btn = document.getElementById('musicBtn');
+    if(musicOn){ stopMusic(); btn.classList.remove('active'); musicOn=false; toast('Music off'); }
+    else { startMusic(); btn.classList.add('active'); musicOn=true; toast('Ambient music on'); }
   }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
+  function startMusic(){
+    try{
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      musicCtx = new Ctx();
+      // Soft pad: 3 detuned sine oscillators with slow LFO
+      const freqs = [261.63, 329.63, 392.00]; // C major chord
+      const master = musicCtx.createGain();
+      master.gain.value = 0.08;
+      master.connect(musicCtx.destination);
+      freqs.forEach((f,i) => {
+        const osc = musicCtx.createOscillator();
+        osc.type = 'sine'; osc.frequency.value = f;
+        const g = musicCtx.createGain(); g.gain.value = 0.33;
+        const lfo = musicCtx.createOscillator();
+        lfo.frequency.value = 0.15 + i*0.05;
+        const lfoG = musicCtx.createGain(); lfoG.gain.value = 0.15;
+        lfo.connect(lfoG).connect(g.gain);
+        osc.connect(g).connect(master);
+        osc.start(); lfo.start();
+        musicNodes.push(osc, lfo);
+      });
+    }catch(e){}
+  }
+  function stopMusic(){
+    musicNodes.forEach(n => { try{ n.stop(); }catch(e){} });
+    musicNodes = [];
+    if(musicCtx){ musicCtx.close(); musicCtx = null; }
+  }
 
+  /* ---------- 📅 ADD TO CALENDAR ---------- */
+  function downloadICS(){
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Raghav Anusha//Engagement//EN',
+      'BEGIN:VEVENT',
+      'UID:raghav-anusha-engagement-2026@invite',
+      'DTSTAMP:20260618T090000Z',
+      'DTSTART:20260706T123000Z',  // 6 Jul 2026 18:00 IST
+      'DTEND:20260706T173000Z',    // 6 Jul 2026 23:00 IST
+      'SUMMARY:Raghav & Anusha — Engagement',
+      'LOCATION:Club Vasantha, Vasantha City, Hafeezpet, Hyderabad 500049',
+      'DESCRIPTION:Save the date for the engagement ceremony of Raghav & Anusha. #RAGHAVwedsANUSHA',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ics], {type:'text/calendar'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'Raghav-Anusha-Engagement.ics';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast('Calendar event downloaded');
+  }
+
+  /* ---------- 📤 SHARE ---------- */
+  async function shareInvite(){
+    const data = {
+      title: 'Raghav & Anusha — Engagement',
+      text: 'You\'re invited! Save the date — July 6, 2026 at Club Vasantha, Hyderabad. #RAGHAVwedsANUSHA',
+      url: window.location.href
+    };
+    try{
+      if(navigator.share){ await navigator.share(data); return; }
+      await navigator.clipboard.writeText(`${data.text}\n${data.url}`);
+      toast('Invite link copied!');
+    }catch(e){ toast('Share cancelled'); }
+  }
+
+  /* ---------- 🔔 TOAST ---------- */
+  let toastTimer = null;
+  function toast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  /* ---------- 🌸 PETALS ---------- */
+  const canvas = document.getElementById('petals');
+  const pctx = canvas.getContext('2d');
+  let petals = [], petalAnim = null, petalsActive = false;
+  function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resizeCanvas); resizeCanvas();
   const PETAL_COLORS = ['#f7c6c7','#f4a6a8','#e88b8d','#d98a6b','#b8926a','#f3d9b1'];
-
-  function makePetal(yStart){
+  function makePetal(){
     return {
-      x: Math.random() * canvas.width,
-      y: yStart !== undefined ? yStart : -20 - Math.random()*canvas.height,
+      x: Math.random()*canvas.width,
+      y: -20 - Math.random()*canvas.height,
       r: 6 + Math.random()*8,
       color: PETAL_COLORS[Math.floor(Math.random()*PETAL_COLORS.length)],
-      vy: 0.8 + Math.random()*1.4,
-      vx: -0.6 + Math.random()*1.2,
-      angle: Math.random()*Math.PI*2,
-      spin: -0.04 + Math.random()*0.08,
+      vy: 0.8 + Math.random()*1.4, vx: -0.6 + Math.random()*1.2,
+      angle: Math.random()*Math.PI*2, spin: -0.04 + Math.random()*0.08,
       sway: Math.random()*Math.PI*2
     };
   }
-
   function drawPetal(p){
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.angle);
-    ctx.fillStyle = p.color;
-    ctx.globalAlpha = 0.85;
-    ctx.beginPath();
-    ctx.ellipse(0, 0, p.r*0.6, p.r, 0, 0, Math.PI*2);
-    ctx.fill();
-    ctx.restore();
+    pctx.save(); pctx.translate(p.x,p.y); pctx.rotate(p.angle);
+    pctx.fillStyle = p.color; pctx.globalAlpha = 0.85;
+    pctx.beginPath(); pctx.ellipse(0,0,p.r*0.6,p.r,0,0,Math.PI*2); pctx.fill();
+    pctx.restore();
   }
-
   function tick(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pctx.clearRect(0,0,canvas.width,canvas.height);
     for(const p of petals){
       p.sway += 0.02;
       p.x += p.vx + Math.sin(p.sway)*0.6;
-      p.y += p.vy;
-      p.angle += p.spin;
-      if(p.y > canvas.height + 20){
-        if(petalsActive){
-          p.y = -20; p.x = Math.random()*canvas.width;
-        }
-      }
+      p.y += p.vy; p.angle += p.spin;
+      if(p.y > canvas.height + 20 && petalsActive){ p.y = -20; p.x = Math.random()*canvas.width; }
       drawPetal(p);
     }
     if(!petalsActive){
       petals = petals.filter(p => p.y < canvas.height + 20);
-      if(petals.length === 0){
-        cancelAnimationFrame(petalAnim); petalAnim = null;
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        return;
-      }
+      if(petals.length === 0){ cancelAnimationFrame(petalAnim); petalAnim=null; pctx.clearRect(0,0,canvas.width,canvas.height); return; }
     }
     petalAnim = requestAnimationFrame(tick);
   }
-
   function startPetals(){
     petalsActive = true;
     const count = window.innerWidth < 600 ? 35 : 60;
-    petals = Array.from({length: count}, () => makePetal());
+    petals = Array.from({length:count}, makePetal);
     if(!petalAnim) tick();
     setTimeout(() => { petalsActive = false; }, 8000);
   }
 
+  /* ---------- ⏱ COUNTDOWN ---------- */
   const targetDate = new Date("July 6, 2026 00:00:00").getTime();
   const $ = id => document.getElementById(id);
-  const pad = n => n < 10 ? "0" + n : n;
-
+  const pad = n => n < 10 ? "0"+n : n;
   const countdown = setInterval(() => {
     const diff = targetDate - Date.now();
-    if (diff < 0){
+    if(diff < 0){
       clearInterval(countdown);
       document.querySelector(".countdown-container").innerHTML =
         "<p style='font-weight:500;color:var(--primary);letter-spacing:2px;text-transform:uppercase;font-size:.85rem;'>The Celebration Has Begun!</p>";
       return;
     }
-    $("days").innerText    = pad(Math.floor(diff / 86400000));
-    $("hours").innerText   = pad(Math.floor((diff % 86400000) / 3600000));
-    $("minutes").innerText = pad(Math.floor((diff % 3600000) / 60000));
-    $("seconds").innerText = pad(Math.floor((diff % 60000) / 1000));
+    $("days").innerText    = pad(Math.floor(diff/86400000));
+    $("hours").innerText   = pad(Math.floor((diff%86400000)/3600000));
+    $("minutes").innerText = pad(Math.floor((diff%3600000)/60000));
+    $("seconds").innerText = pad(Math.floor((diff%60000)/1000));
   }, 1000);
 </script>
 </body>
