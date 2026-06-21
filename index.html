@@ -13,8 +13,12 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
   body{font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:#3a1118;overflow-x:hidden;}
-  body.cover{overflow:hidden;height:100vh;}
   .is-hidden{display:none !important;}
+  /* Keep decorative layers absolute — higher specificity than .envelope>* / .hero>* */
+  .envelope > .garland, .hero > .garland{position:absolute !important;top:0;z-index:5;}
+  .envelope > .mandala{position:absolute !important;z-index:0;}
+  .hero > .petals{position:absolute !important;inset:0;z-index:1;}
+  .hero > .hero-bg{position:absolute !important;z-index:0;}
   .wrap{max-width:680px;margin:0 auto;position:relative;background:var(--cream);box-shadow:0 0 60px rgba(0,0,0,.4);}
   section{position:relative;padding:54px 26px;text-align:center;overflow:hidden;}
 
@@ -160,7 +164,18 @@
   .reveal.show{opacity:1;transform:none;}
 
   @media (max-width:480px){.hero-name{font-size:38px;}.env-names{font-size:26px;}section{padding:44px 18px;}.garland{width:108px;}}
-  @media print{.wrap{box-shadow:none;}.open-btn,.btn-dir,.share-btn,.petals{display:none;}.reveal{opacity:1;transform:none;}}
+  @media print{
+    .wrap{box-shadow:none;}
+    .open-btn,.btn-dir,.share-btn,.petals,.tap{display:none;}
+    .reveal{opacity:1 !important;transform:none !important;}
+    .is-hidden{display:block !important;}                /* print full invite (cover + details) */
+    .envelope{min-height:auto;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .petal{display:none;}
+    .reveal{transition:none;opacity:1;transform:none;}
+    html{scroll-behavior:auto;}
+  }
   @media (prefers-color-scheme: dark){
     .wrap{background:#2a0a0e;}
     section:not(.countdown):not(.photo),.ele-div{background:#34121a !important;color:#f3e6cd;}
@@ -169,6 +184,12 @@
     .venue-addr,.ev-venue,.hero-venue,.blessed{color:#e9d8b8 !important;}
   }
 </style>
+<noscript><style>
+  /* If scripts are blocked, never trap the guest on the cover */
+  #content.is-hidden{display:block !important;}
+  body.cover{overflow:auto !important;height:auto !important;}
+  .reveal{opacity:1 !important;transform:none !important;}
+</style></noscript>
 </head>
 <body>
 <div class="wrap">
@@ -311,16 +332,16 @@
 
   var openBtn = document.getElementById('openBtn');
   var content = document.getElementById('content');
+  var envelope = document.querySelector('.envelope');
   function openInvite(){
-    if (content) content.classList.remove('is-hidden');
+    if (envelope) envelope.classList.add('is-hidden');   // hide the cover entirely
+    if (content) content.classList.remove('is-hidden');  // show only the details
     document.body.classList.remove('cover');
-    // reveal any sections already in view, then smooth-scroll down
+    window.scrollTo(0, 0);
     requestAnimationFrame(function(){
       document.querySelectorAll('#content .reveal').forEach(function(el){
         if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('show');
       });
-      var hero = document.getElementById('hero');
-      if (hero) hero.scrollIntoView({behavior:'smooth'});
     });
   }
   if (openBtn) openBtn.addEventListener('click', openInvite);
